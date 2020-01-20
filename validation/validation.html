@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- <form id="tab">
+        <input class="form-control my-3" id="name" name="name" type="text" placeholder="Enter Name" required>
+        <input class="form-control my-3" id="num" name="number" type="number" placeholder="Enter Number" required>
+        
+        <button type="button" id="addrow" class="btn btn-dark my-3">Add</button>
+    </form> -->
+    <form id="tab">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Numbers</th>
+                    <th>Email</th>
+                    <th>Buttons</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+
+                    <td><input class="form-control" id="name" name="name" type="text" placeholder="Enter Name"
+                            required><br></td>
+                    <td><input class="form-control" id="num" class="only-numeric" name="number" type="text"
+                            placeholder="Enter Number" required><br>
+                    </td>
+                    <td><input class="form-control" id="email" name="email" type="text" placeholder="Enter Email"
+                            required><br></td>
+                    <td><button type="button" id="addrow" class="btn btn-dark">Add</button></td>
+
+                </tr>
+            </tbody>
+        </table>
+    </form>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+
+    <script>
+        $(function () {
+            // validation
+            jQuery.validator.setDefaults({
+                debug: true,
+                success: "valid"
+            });
+            var form = $("#tab");
+            var number = $("#num");
+            var email = $("#email");
+
+            $("#num").on("keypress keyup blur", function (event) {
+                $(this).val($(this).val().replace(/[^\d].+/, ""));
+                if ((event.which < 48 || event.which > 57)) {
+                    event.preventDefault();
+                }
+            });
+
+
+
+            number.blur(function (e) {
+                phone = $(this).val();
+                phone = phone.replace(/[^0-9]/g, '');
+                if (phone.length != 10) {
+                    alert('Phone number must be 10 digits.');
+                    $('#num').val('');
+
+                }
+            });
+
+            form.validate();
+
+            //add row 
+            $("#addrow").click(function () {
+
+                if (form.valid()) {
+
+                    $(".error").hide();
+
+                    var hasError = false;
+                    var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+
+                    var emailaddressVal = $("#email").val();
+                    if (emailaddressVal == '') {
+                        $("#email").after('<span class="error">Please enter your email address.</span>');
+                        hasError = true;
+                    }
+
+                    else if (!emailReg.test(emailaddressVal)) {
+                        $("#email").after('<span class="error">Enter a valid email address.</span>');
+                        hasError = true;
+                    }
+
+                    if (hasError == true) { return false; }
+
+               
+
+
+
+
+            console.log("hi");
+            var name = $('#name').val();
+            var number = $('#num').val();
+            var email = $('#email').val();
+
+            var add = "<tr><td>" + name +
+                "</td><td>" + number + "</td><td>" + email +
+                "<td><div><button  id='delete' name='delete' class='btn btn-danger' type='button'>DELETE</button></div></td>" + "</td></tr>";
+
+            $("table tbody").append(add);
+
+
+            $("#name").val('');
+            $("#num").val('');
+            $("#email").val('');
+
+
+            // delete row
+            $(document).on('click', '#delete', function () {
+                $(this).closest('tr').remove();
+            });
+        }
+
+            });
+
+        });
+
+
+
+
+    </script>
+
+
+</body>
+
+</html>
